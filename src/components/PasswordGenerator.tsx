@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react"
+import React, { useState, useRef, useEffect } from "react"
 
 type Password = {
 	characterLength: number
@@ -17,6 +17,11 @@ const PasswordGenerator = () => {
 		symbols: false,
 	})
 	const passwordRef = useRef<Password | null>(null)
+	const [generatedPassword, setGeneratedPassword] = useState<string>("")
+
+	useEffect(() => {
+		generatePassword()
+	}, [password])
 
 	const handleCharacterLengthChange = (
 		event: React.ChangeEvent<HTMLInputElement>
@@ -33,8 +38,36 @@ const PasswordGenerator = () => {
 		event: React.ChangeEvent<HTMLInputElement>
 	) => {
 		const value = event.target.checked
-		console.log("Suka ~ file: PasswordGenerator.tsx:36 ~ value:", value)
 		setPassword((prevPassword) => ({ ...prevPassword, [field]: value }))
+	}
+
+	const generatePassword = () => {
+		const lowercaseChars = "abcdefghijklmnopqrstuvwxyz"
+		const uppercaseChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+		const numberChars = "0123456789"
+		const symbolChars = "!@#$%^&*"
+
+		let allowedChars = ""
+		if (password.lowerCase) allowedChars += lowercaseChars
+		if (password.upperCase) allowedChars += uppercaseChars
+		if (password.numbers) allowedChars += numberChars
+		if (password.symbols) allowedChars += symbolChars
+
+		let newPassword = ""
+		for (let i = 0; i < password.characterLength; i++) {
+			const randomIndex = Math.floor(Math.random() * allowedChars.length)
+			newPassword += allowedChars[randomIndex]
+		}
+
+		setGeneratedPassword(newPassword)
+	}
+
+	const getSecurityPercentage = () => {
+		const totalOptions = passwordProperties.length
+		const activeOptions = passwordProperties.filter(
+			(property) => password[property]
+		).length
+		return (activeOptions / totalOptions) * 100
 	}
 
 	const passwordProperties = Object.keys(password).filter(
@@ -74,6 +107,11 @@ const PasswordGenerator = () => {
 							<p>Include {property}</p>
 						</div>
 					))}
+				</div>
+				{generatedPassword}
+				{/* SECURITY COUNTER */}
+				<div className="flex flex-col gap-2">
+					<p>Security: {getSecurityPercentage()}%</p>
 				</div>
 			</div>
 		</div>
