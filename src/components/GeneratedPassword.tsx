@@ -16,7 +16,7 @@ const GeneratedPassword: React.FC = () => {
 			data-theme="dark"
 			className="card card-compact w-96 bg-base-100 border-black shadow-xl flex-row items-center p-2"
 		>
-			<p className="flex-1 p-1" ref={passwordRef}>
+			<p className="flex-1 p-1 italic" ref={passwordRef}>
 				{password}
 			</p>
 			<button className="btn btn-primary" onClick={copyToClipboard}>
