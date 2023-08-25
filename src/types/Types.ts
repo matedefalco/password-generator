@@ -1,20 +1,20 @@
-type Password = {
-	_password: string
-	variables: {
-		characterLength: number
-		upperCase: boolean
-		lowerCase: boolean
-		numbers: boolean
-		symbols: boolean
-	}
+export type PasswordVariables = {
+	characterLength: number
+	upperCase: boolean
+	lowerCase: boolean
+	numbers: boolean
+	symbols: boolean
 }
 
-type GeneratedPasswordProps = {
+export type Password = {
+	_password: string
+	variables: PasswordVariables
+}
+
+export type GeneratedPasswordProps = {
 	generatedPassword: string
 }
 
-type PasswordGeneratorProps = {
+export type PasswordGeneratorProps = {
 	onPasswordGenerated: (password: string) => void
 }
-
-export { Password, GeneratedPasswordProps, PasswordGeneratorProps }

@@ -1,6 +1,7 @@
 import { GeneratedPasswordProps } from "../types/Types"
 
 const GeneratedPassword = ({ generatedPassword }: GeneratedPasswordProps) => {
+	// Function to copy generated password to clipboard
 	const copyToClipboard = () => {
 		const textField = document.createElement("textarea")
 		textField.value = generatedPassword
@@ -15,7 +16,10 @@ const GeneratedPassword = ({ generatedPassword }: GeneratedPasswordProps) => {
 			data-theme="dark"
 			className="card card-compact w-96 bg-base-100 border-black shadow-xl flex-row items-center p-2"
 		>
+			{/* Display generated password */}
 			<p className="flex-1 p-1 italic">{generatedPassword}</p>
+
+			{/* Button to copy password to clipboard */}
 			<button className="btn btn-primary" onClick={copyToClipboard}>
 				<img
 					alt="clipboard"

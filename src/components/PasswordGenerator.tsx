@@ -4,6 +4,7 @@ import { PasswordGeneratorProps, Password } from "../types/Types"
 const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({
 	onPasswordGenerated,
 }) => {
+	// State to manage the password and its variables
 	const [password, setPassword] = useState<Password>({
 		_password: "",
 		variables: {
@@ -15,6 +16,7 @@ const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({
 		},
 	})
 
+	// Handle character length change
 	const handleCharacterLengthChange = (
 		event: React.ChangeEvent<HTMLInputElement>
 	) => {
@@ -28,6 +30,7 @@ const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({
 		}))
 	}
 
+	// Handle checkbox change for variables
 	const handleCheckboxChange = (
 		field: keyof Password["variables"],
 		event: React.ChangeEvent<HTMLInputElement>
@@ -42,6 +45,7 @@ const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({
 		}))
 	}
 
+	// Generate a new password
 	const generatePassword = () => {
 		const lowercaseChars = "abcdefghijklmnopqrstuvwxyz"
 		const uppercaseChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -70,10 +74,12 @@ const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({
 		}
 	}
 
+	// Generate a new password whenever variables change
 	useEffect(() => {
 		generatePassword()
 	}, [password.variables])
 
+	// Calculate security percentage based on active options
 	const getSecurityPercentage = () => {
 		const totalOptions = passwordProperties.length
 		const activeOptions = passwordProperties.filter(
@@ -82,6 +88,7 @@ const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({
 		return (activeOptions / totalOptions) * 100
 	}
 
+	// Filter out keys that are not needed for display
 	const passwordProperties = Object.keys(password.variables).filter(
 		(key) => key !== "characterLength" && key !== "_password"
 	) as Array<keyof Password["variables"]>
