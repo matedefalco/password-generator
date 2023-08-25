@@ -93,6 +93,15 @@ const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({
 		(key) => key !== "characterLength" && key !== "_password"
 	) as Array<keyof Password["variables"]>
 
+	// Calculate interpolated color based on security percentage
+	const getColorForSecurity = () => {
+		const securityPercentage = getSecurityPercentage()
+		const minHue = 0 // Red
+		const maxHue = 120 // Green
+		const hue = minHue + (maxHue - minHue) * (securityPercentage / 100)
+		return `hsl(${hue}, 100%, 50%)`
+	}
+
 	return (
 		<div data-theme="dark" className="card w-96 bg-base-100 shadow-xl">
 			<div className="card-body gap-8">
@@ -128,8 +137,11 @@ const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({
 					))}
 				</div>
 				{/* SECURITY COUNTER */}
-				<div className="flex flex-col gap-2">
-					<p>Security: {getSecurityPercentage()}%</p>
+				<div className="flex justify-between bg-black p-2">
+					<p className="w-80 italic">STRENGTH</p>
+					<p className={"font-bold"} style={{ color: getColorForSecurity() }}>
+						{getSecurityPercentage()}%
+					</p>
 				</div>
 			</div>
 		</div>
