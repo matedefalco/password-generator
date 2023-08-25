@@ -1,7 +1,13 @@
-import React, { useState, useRef, useEffect } from "react"
+import React, { useState, useEffect } from "react"
 import Password from "../types/Types"
 
-const PasswordGenerator = () => {
+type PasswordGeneratorProps = {
+	onPasswordGenerated: (password: string) => void
+}
+
+const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({
+	onPasswordGenerated,
+}) => {
 	const [password, setPassword] = useState<Password>({
 		_password: "",
 		variables: {
@@ -12,7 +18,6 @@ const PasswordGenerator = () => {
 			symbols: false,
 		},
 	})
-	const passwordRef = useRef<string | null>(null)
 
 	useEffect(() => {
 		generatePassword()
@@ -49,9 +54,9 @@ const PasswordGenerator = () => {
 		const lowercaseChars = "abcdefghijklmnopqrstuvwxyz"
 		const uppercaseChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 		const numberChars = "0123456789"
-		const symbolChars = "!@#$%^&*"
+		const symbolChars = "!@#$%^&"
 
-		let allowedChars = " "
+		let allowedChars = "*"
 		if (password.variables.lowerCase) allowedChars += lowercaseChars
 		if (password.variables.upperCase) allowedChars += uppercaseChars
 		if (password.variables.numbers) allowedChars += numberChars
@@ -68,7 +73,9 @@ const PasswordGenerator = () => {
 			_password: newPassword,
 		}))
 
-		passwordRef.current = password._password
+		if (onPasswordGenerated) {
+			onPasswordGenerated(newPassword)
+		}
 	}
 
 	const getSecurityPercentage = () => {
@@ -117,7 +124,6 @@ const PasswordGenerator = () => {
 						</div>
 					))}
 				</div>
-				{password._password}
 				{/* SECURITY COUNTER */}
 				<div className="flex flex-col gap-2">
 					<p>Security: {getSecurityPercentage()}%</p>
