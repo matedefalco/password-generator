@@ -1,15 +1,8 @@
 import { GeneratedPasswordProps } from "../types/Types"
+import { useCopyToClipboard } from "../helpers/CopyToClipboard"
 
 const GeneratedPassword = ({ generatedPassword }: GeneratedPasswordProps) => {
-	// Function to copy generated password to clipboard
-	const copyToClipboard = () => {
-		const textField = document.createElement("textarea")
-		textField.value = generatedPassword
-		document.body.appendChild(textField)
-		textField.select()
-		document.execCommand("copy")
-		textField.remove()
-	}
+	const handleCopyToClipboard = useCopyToClipboard(generatedPassword)
 
 	return (
 		<div
@@ -20,7 +13,7 @@ const GeneratedPassword = ({ generatedPassword }: GeneratedPasswordProps) => {
 			<p className="flex-1 p-1 italic">{generatedPassword}</p>
 
 			{/* Button to copy password to clipboard */}
-			<button className="btn btn-primary" onClick={copyToClipboard}>
+			<button className="btn btn-primary" onClick={handleCopyToClipboard}>
 				<img
 					alt="clipboard"
 					src="https://icongr.am/clarity/clipboard.svg?size=128&color=ffffff"
