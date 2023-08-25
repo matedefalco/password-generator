@@ -1,4 +1,4 @@
-type PasswordVariables = {
+type Password = {
 	_password: string
 	variables: {
 		characterLength: number
@@ -9,4 +9,12 @@ type PasswordVariables = {
 	}
 }
 
-export default PasswordVariables
+type GeneratedPasswordProps = {
+	generatedPassword: string
+}
+
+type PasswordGeneratorProps = {
+	onPasswordGenerated: (password: string) => void
+}
+
+export { Password, GeneratedPasswordProps, PasswordGeneratorProps }

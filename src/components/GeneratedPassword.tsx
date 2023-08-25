@@ -1,15 +1,9 @@
-const GeneratedPassword = ({
-	forwardedRef,
-}: {
-	forwardedRef: React.MutableRefObject<string | null>
-}) => {
-	console.log(
-		"Suka ~ file: GeneratedPassword.tsx:6 ~ forwardedRef:",
-		forwardedRef
-	)
+import { GeneratedPasswordProps } from "../types/Types"
+
+const GeneratedPassword = ({ generatedPassword }: GeneratedPasswordProps) => {
 	const copyToClipboard = () => {
 		const textField = document.createElement("textarea")
-		textField.value = forwardedRef.current
+		textField.value = generatedPassword
 		document.body.appendChild(textField)
 		textField.select()
 		document.execCommand("copy")
@@ -21,7 +15,7 @@ const GeneratedPassword = ({
 			data-theme="dark"
 			className="card card-compact w-96 bg-base-100 border-black shadow-xl flex-row items-center p-2"
 		>
-			<p className="flex-1 p-1 italic">{forwardedRef.current}</p>
+			<p className="flex-1 p-1 italic">{generatedPassword}</p>
 			<button className="btn btn-primary" onClick={copyToClipboard}>
 				<img
 					alt="clipboard"

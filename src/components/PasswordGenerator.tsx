@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from "react"
-import Password from "../types/Types"
-
-type PasswordGeneratorProps = {
-	onPasswordGenerated: (password: string) => void
-}
+import { PasswordGeneratorProps, Password } from "../types/Types"
 
 const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({
 	onPasswordGenerated,
