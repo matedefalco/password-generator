@@ -1,14 +1,21 @@
-import { useState, useRef } from "react"
+import React from "react"
 
-const GeneratedPassword: React.FC = () => {
-	const [password] = useState("generated_password")
-	const passwordRef = useRef<HTMLInputElement>(null)
+interface GeneratedPasswordProps {
+	password: string
+}
 
+const dummyPassword: string = "Suggested password"
+
+const GeneratedPassword: React.FC<GeneratedPasswordProps> = ({ password }) => {
 	const copyToClipboard = () => {
-		if (passwordRef.current) {
-			passwordRef.current.select()
-			document.execCommand("copy")
-		}
+		const textField = document.createElement("textarea")
+		password !== undefined
+			? (textField.value = password)
+			: (textField.value = dummyPassword)
+		document.body.appendChild(textField)
+		textField.select()
+		document.execCommand("copy")
+		textField.remove()
 	}
 
 	return (
@@ -16,9 +23,7 @@ const GeneratedPassword: React.FC = () => {
 			data-theme="dark"
 			className="card card-compact w-96 bg-base-100 border-black shadow-xl flex-row items-center p-2"
 		>
-			<p className="flex-1 p-1 italic" ref={passwordRef}>
-				{password}
-			</p>
+			<p className="flex-1 p-1 italic">{password || dummyPassword}</p>
 			<button className="btn btn-primary" onClick={copyToClipboard}>
 				<img
 					alt="clipboard"
