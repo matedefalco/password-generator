@@ -19,10 +19,6 @@ const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({
 		},
 	})
 
-	useEffect(() => {
-		generatePassword()
-	}, [password.variables])
-
 	const handleCharacterLengthChange = (
 		event: React.ChangeEvent<HTMLInputElement>
 	) => {
@@ -77,6 +73,10 @@ const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({
 			onPasswordGenerated(newPassword)
 		}
 	}
+
+	useEffect(() => {
+		generatePassword()
+	}, [password.variables])
 
 	const getSecurityPercentage = () => {
 		const totalOptions = passwordProperties.length
