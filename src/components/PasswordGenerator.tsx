@@ -128,7 +128,7 @@ const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({
 						<div className="flex p-1 gap-4" key={property}>
 							<input
 								type="checkbox"
-								checked={password.variables[property]}
+								checked={!!password.variables[property]}
 								onChange={(e) => handleCheckboxChange(property, e)}
 								className="checkbox"
 							/>
