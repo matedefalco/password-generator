@@ -7,7 +7,7 @@ const GeneratedPassword = ({ generatedPassword }: GeneratedPasswordProps) => {
 	return (
 		<div
 			data-theme="dark"
-			className="card card-compact w-96 bg-base-100 border-black shadow-xl flex-row items-center p-2"
+			className="card card-compact sm:w-8/12 sm:mx-auto lg:w-96 bg-base-100 border-black shadow-xl flex-row sm:justify-between items-center p-2"
 		>
 			{/* Display generated password */}
 			<p className="flex-1 p-1 italic">{generatedPassword}</p>

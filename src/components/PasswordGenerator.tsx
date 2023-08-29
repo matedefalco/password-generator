@@ -103,7 +103,10 @@ const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({
 	}
 
 	return (
-		<div data-theme="dark" className="card w-96 bg-base-100 shadow-xl">
+		<div
+			data-theme="dark"
+			className="card sm:w-8/12 sm:mx-auto lg:w-96 bg-base-100 shadow-xl"
+		>
 			<div className="card-body gap-8">
 				{/* CHARACTER LENGTH */}
 				<div className="flex flex-col gap-2">

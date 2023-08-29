@@ -17,10 +17,12 @@ const App = () => {
 	}
 
 	return (
-		<main className="flex flex-col justify-center items-center w-screen h-screen gap-8">
+		<main className="flex flex-col sm:justify-start lg:justify-center items-center w-screen h-screen gap-8p py-4">
 			<h1 className="text-2xl text-slate-500">Password generator</h1>
-			<GeneratedPassword generatedPassword={generatedPassword} />
-			<PasswordGenerator onPasswordGenerated={handlePasswordGenerated} />{" "}
+			<div className="sm:p-4 flex flex-col justify-center gap-4 ">
+				<GeneratedPassword generatedPassword={generatedPassword} />
+				<PasswordGenerator onPasswordGenerated={handlePasswordGenerated} />
+			</div>
 			<footer className="flex flex-col gap-2 items-center">
 				<p>Made with:</p>
 				<ul className="flex gap-2">
