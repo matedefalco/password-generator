@@ -12,9 +12,14 @@ export type Password = {
 }
 
 export type GeneratedPasswordProps = {
-	generatedPassword: string
+	generatedPassword: Password
 }
 
 export type PasswordGeneratorProps = {
-	onPasswordGenerated: (password: string) => void
+	onPasswordGenerated: (password: Password) => void
+}
+
+export interface User {
+	id: string
+	passwords: Password[]
 }
