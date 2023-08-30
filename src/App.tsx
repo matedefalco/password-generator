@@ -18,30 +18,30 @@ const App: React.FC = () => {
 	const [generatedPassword, setGeneratedPassword] = useState<Password | null>()
 	const [usersDB, setUsersDB] = useState<User[]>([])
 
+	// Fetch data when the component loads
+	useEffect(() => {
+		const fetchPasswordsHandler = async () => {
+			try {
+				const response = await fetch(
+					"https://password-generator-57bd8-default-rtdb.firebaseio.com/passwords.json"
+				)
+				if (!response.ok) {
+					throw new Error("Something went wrong")
+				}
+
+				const dataDB: User[] = await response.json()
+				setUsersDB(dataDB)
+			} catch (error) {
+				console.error("Error fetching data:", error)
+			}
+		}
+
+		fetchPasswordsHandler()
+	}, [])
+
 	const handlePasswordGenerated = (password: Password) => {
 		setGeneratedPassword(password)
 	}
-
-	const fetchPasswordsHandler = useCallback(async () => {
-		try {
-			const response = await fetch(
-				"https://password-generator-57bd8-default-rtdb.firebaseio.com/passwords.json"
-			)
-			if (!response.ok) {
-				throw new Error("Something went wrong")
-			}
-
-			const dataDB: User[] = await response.json()
-			console.log("Suka ~ file: App.tsx:34 ~ dataDB:", dataDB)
-			setUsersDB(dataDB)
-		} catch (error) {
-			console.error("Error fetching data:", error)
-		}
-	}, [])
-
-	useEffect(() => {
-		fetchPasswordsHandler()
-	}, [fetchPasswordsHandler])
 
 	async function addPasswordHandler() {
 		if (user && generatedPassword) {
@@ -127,7 +127,6 @@ const App: React.FC = () => {
 				<button className="btn btn-primary w-75" onClick={addPasswordHandler}>
 					SAVE PASSWORD
 				</button>
-				<button onClick={fetchPasswordsHandler}>FETCH DATA</button>
 			</div>
 			<footer className="flex flex-col gap-2 items-center mb-8">
 				<p>Made with:</p>
