@@ -55,38 +55,49 @@ const App: React.FC = () => {
 					symbols: generatedPassword.variables.symbols,
 				},
 			}
-			console.log("Suka ~ file: App.tsx:58 ~ newPassword:", generatedPassword)
 
-			const existingUserIndex = usersDB.findIndex(
-				(userData) => userData.id === userID
-			)
+			// Verifies if usersDB is empty or not, before using findIndex
+			const existingUserIndex =
+				usersDB !== null
+					? usersDB.findIndex((userData) => userData.id === userID)
+					: -1
 
 			if (existingUserIndex !== -1) {
 				// User exists, update their password array
 				const updatedUsers = [...usersDB]
 				updatedUsers[existingUserIndex].passwords.push(newPassword)
 				setUsersDB(updatedUsers)
+
+				await fetch(
+					"https://password-generator-57bd8-default-rtdb.firebaseio.com/passwords.json",
+					{
+						method: "PUT",
+						body: JSON.stringify(updatedUsers),
+						headers: {
+							"Content-Type": "application/json",
+						},
+					}
+				)
 			} else {
 				// User does not exist, create a new user entry
-				const userDB: User = {
+				const newUser: User = {
 					id: userID || "",
 					passwords: [newPassword],
 				}
 
+				setUsersDB([newUser])
+
 				try {
-					const response = await fetch(
+					await fetch(
 						"https://password-generator-57bd8-default-rtdb.firebaseio.com/passwords.json",
 						{
 							method: "POST",
-							body: JSON.stringify(userDB),
+							body: JSON.stringify(usersDB),
 							headers: {
 								"Content-Type": "application/json",
 							},
 						}
 					)
-
-					const data = await response.json()
-					console.log("Data after adding password:", data)
 				} catch (error) {
 					console.error("Error adding password:", error)
 				}
@@ -94,13 +105,10 @@ const App: React.FC = () => {
 		}
 	}
 
-	// const currentUser = usersDB.find((userData) => userData.id === user?.id)
-	// const currentUserPasswords = currentUser?.passwords || []
-
 	return (
-		<main className="flex flex-col justify-center items-center w-screen h-screen gap-8 p-4">
+		<main className="flex flex-col justify-center items-center w-full h-full my-8 gap-4 p-4">
 			<h1 className="text-2xl text-slate-500">Password generator</h1>
-			<div className="sm:p-4 flex flex-col justify-center gap-4">
+			<div className="sm:p-4 flex flex-col justify-center items-center gap-4">
 				<GeneratedPassword
 					generatedPassword={
 						generatedPassword || {
@@ -116,10 +124,12 @@ const App: React.FC = () => {
 					}
 				/>
 				<PasswordGenerator onPasswordGenerated={handlePasswordGenerated} />
+				<button className="btn btn-primary w-75" onClick={addPasswordHandler}>
+					SAVE PASSWORD
+				</button>
 				<button onClick={fetchPasswordsHandler}>FETCH DATA</button>
-				<button onClick={addPasswordHandler}>ADD PASSWORD</button>
 			</div>
-			<footer className="flex flex-col gap-2 items-center">
+			<footer className="flex flex-col gap-2 items-center mb-8">
 				<p>Made with:</p>
 				<ul className="flex gap-2">
 					{imgUrls.map((url, index) => (
