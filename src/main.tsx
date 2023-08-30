@@ -8,11 +8,19 @@ import {
 	SignedOut,
 	RedirectToSignIn,
 } from "@clerk/clerk-react"
+import { createBrowserRouter, RouterProvider } from "react-router-dom"
 
 if (!import.meta.env.VITE_REACT_APP_CLERK_PUBLISHABLE_KEY) {
 	throw new Error("Missing Publishable key")
 }
 const clerkPubKey = import.meta.env.VITE_REACT_APP_CLERK_PUBLISHABLE_KEY
+
+const router = createBrowserRouter([
+	{
+		path: "/",
+		element: <App />,
+	},
+])
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
 	<React.StrictMode>
@@ -21,7 +29,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
 				<RedirectToSignIn />
 			</SignedOut>
 			<SignedIn>
-				<App />
+				<RouterProvider router={router} />
 			</SignedIn>
 		</ClerkProvider>
 	</React.StrictMode>
