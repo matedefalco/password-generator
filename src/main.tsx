@@ -9,6 +9,7 @@ import {
 	RedirectToSignIn,
 } from "@clerk/clerk-react"
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
+import { DbContextProvider } from "./context/DbContext.tsx"
 
 if (!import.meta.env.VITE_REACT_APP_CLERK_PUBLISHABLE_KEY) {
 	throw new Error("Missing Publishable key")
@@ -24,13 +25,15 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
 	<React.StrictMode>
-		<ClerkProvider publishableKey={clerkPubKey}>
-			<SignedOut>
-				<RedirectToSignIn />
-			</SignedOut>
-			<SignedIn>
-				<RouterProvider router={router} />
-			</SignedIn>
-		</ClerkProvider>
+		<DbContextProvider>
+			<ClerkProvider publishableKey={clerkPubKey}>
+				<SignedOut>
+					<RedirectToSignIn />
+				</SignedOut>
+				<SignedIn>
+					<RouterProvider router={router} />
+				</SignedIn>
+			</ClerkProvider>
+		</DbContextProvider>
 	</React.StrictMode>
 )

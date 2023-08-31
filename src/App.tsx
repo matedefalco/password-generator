@@ -1,5 +1,3 @@
-import React, { useEffect, useState } from "react"
-import { User } from "./types/Types"
 import CreatePassword from "./components/CreatePassword"
 
 const imgUrls = [
@@ -10,33 +8,10 @@ const imgUrls = [
 ]
 
 const App: React.FC = () => {
-	const [usersDB, setUsersDB] = useState<User[]>([])
-
-	// Fetch data when the component loads
-	useEffect(() => {
-		const fetchPasswordsHandler = async () => {
-			try {
-				const response = await fetch(
-					"https://password-generator-57bd8-default-rtdb.firebaseio.com/passwords.json"
-				)
-				if (!response.ok) {
-					throw new Error("Something went wrong")
-				}
-
-				const dataDB: User[] = await response.json()
-				setUsersDB(dataDB)
-			} catch (error) {
-				console.error("Error fetching data:", error)
-			}
-		}
-
-		fetchPasswordsHandler()
-	}, [])
-
 	return (
 		<main className="flex flex-col justify-center items-center w-full h-full my-8 gap-4 p-4">
 			<h1 className="text-2xl text-slate-500">Password generator</h1>
-			<CreatePassword usersDb={usersDB} />
+			<CreatePassword />
 			<footer className="flex flex-col gap-2 items-center mb-8">
 				<p>Made with:</p>
 				<ul className="flex gap-2">

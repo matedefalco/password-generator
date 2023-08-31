@@ -1,3 +1,5 @@
+import { PropsWithChildren } from "react"
+
 export type PasswordVariables = {
 	characterLength: number
 	upperCase: boolean
@@ -24,6 +26,4 @@ export interface User {
 	passwords: Password[]
 }
 
-export interface CreatePasswordProps {
-	usersDb: User[]
-}
+export type DbContextProviderProps = PropsWithChildren<object>
