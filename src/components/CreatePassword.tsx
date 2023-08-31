@@ -1,12 +1,12 @@
-import { useContext, useState } from "react"
+import { useState } from "react"
 import GeneratedPassword from "./GeneratedPassword"
 import PasswordGenerator from "./PasswordGenerator"
 import { Password, User } from "../types/Types"
 import { useUser } from "@clerk/clerk-react"
-import { DbContextProvider } from "../context/DbContext"
+import { useDbContext } from "../context/DbContext"
 
 const CreatePassword: React.FC = () => {
-	const usersDb = useContext(DbContextProvider)
+	const usersDb = useDbContext()
 	const { user } = useUser()
 	const userID: string | undefined = user?.id
 	const [generatedPassword, setGeneratedPassword] = useState<Password | null>()
