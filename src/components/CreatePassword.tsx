@@ -3,16 +3,17 @@ import GeneratedPassword from "./GeneratedPassword"
 import PasswordGenerator from "./PasswordGenerator"
 import { Password, User } from "../types/Types"
 import { useUser } from "@clerk/clerk-react"
-import { useDbContext } from "../context/DbContext"
 import { Link } from "react-router-dom"
 import { useNavigate } from "react-router-dom"
+import { DbContext } from "../context/DbContext"
+import { useContext } from "react"
 
 const CreatePassword: React.FC = () => {
-	const usersDb = useDbContext()
+	const usersDb = useContext(DbContext)
 	const { user } = useUser()
 	const userID: string | undefined = user?.id
 	const [generatedPassword, setGeneratedPassword] = useState<Password | null>()
-	const [usersDB, setUsersDB] = useState<User[]>(usersDb)
+	const [usersDB, setUsersDB] = useState<User[] | undefined>(usersDb)
 
 	const navigate = useNavigate()
 
@@ -75,7 +76,7 @@ const CreatePassword: React.FC = () => {
 
 			// Verifies if usersDB is empty or not, before using findIndex
 			const existingUserIndex =
-				usersDB !== null
+				usersDB !== undefined
 					? usersDB.findIndex((userData) => userData.id === userID)
 					: -1
 

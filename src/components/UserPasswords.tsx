@@ -1,19 +1,22 @@
 import { useState, useEffect } from "react"
-import { useDbContext } from "../context/DbContext"
+// import { useDbContext } from "../context/DbContext"
 import { useUser } from "@clerk/clerk-react"
 import { Password } from "../types/Types"
 import { Link } from "react-router-dom"
 import { CopyToClipboard } from "react-copy-to-clipboard"
+import { DbContext } from "../context/DbContext"
+import { useContext } from "react"
+import { User } from "../types/Types"
 
 const UserPasswords = () => {
 	const [state, setState] = useState({ value: "", copied: false })
 	const { user } = useUser()
-	const usersDb = useDbContext()
+	const usersDb = useContext<User[] | undefined>(DbContext)
 
 	const [userPasswords, setUserPasswords] = useState<Password[]>([])
 
 	useEffect(() => {
-		if (user) {
+		if (user && usersDb !== undefined) {
 			const currentUser = usersDb.find((userData) => userData.id === user.id)
 			if (currentUser) {
 				setUserPasswords(currentUser.passwords)
@@ -26,7 +29,7 @@ const UserPasswords = () => {
 			<Link to={`/create-password`}>
 				<button className="btn btn-primary w-full">NEW PASSWORD</button>
 			</Link>
-			{userPasswords ? (
+			{userPasswords.length !== 0 ? (
 				<div className="flex flex-col gap-4">
 					{userPasswords.map((password) => (
 						<div

@@ -1,18 +1,8 @@
-import React, { useEffect, useState, createContext, useContext } from "react"
+import React, { useEffect, useState, createContext } from "react"
 import { User, DbContextProviderProps } from "../types/Types"
 
 // Create context
-const DbContext = createContext<User[] | undefined>(undefined)
-
-export function useDbContext() {
-	const context = useContext(DbContext)
-
-	if (!context) {
-		throw new Error("DbContext must be used within a DbProvider")
-	}
-
-	return context
-}
+export const DbContext = createContext<User[] | undefined>(undefined)
 
 export const DbContextProvider: React.FC<DbContextProviderProps> = ({
 	children,

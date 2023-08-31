@@ -1,4 +1,7 @@
 import { Link } from "react-router-dom"
+import { DbContext } from "./context/DbContext"
+import { useContext } from "react"
+import { User } from "./types/Types"
 
 const imgUrls = [
 	"https://cdn1.iconfinder.com/data/icons/programing-development-8/24/react_logo-512.png",
@@ -8,12 +11,16 @@ const imgUrls = [
 ]
 
 const App: React.FC = () => {
+	const usersDb = useContext<User[] | undefined>(DbContext)
+
 	return (
 		<main className="flex flex-col justify-center items-center w-full h-full my-8 gap-4 p-4">
 			<h1 className="text-2xl text-slate-500">Password generator</h1>
-			<Link to={`/user-passwords`}>
-				<button className="btn btn-primary w-full">MY PASSWORDS</button>
-			</Link>
+			{usersDb && usersDb.length > 0 && (
+				<Link to={`/user-passwords`}>
+					<button className="btn btn-primary w-full">MY PASSWORDS</button>
+				</Link>
+			)}
 			<Link to={`/create-password`}>
 				<button className="btn btn-primary w-full">NEW PASSWORD</button>
 			</Link>
