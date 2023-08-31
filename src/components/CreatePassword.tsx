@@ -82,7 +82,7 @@ const CreatePassword: React.FC = () => {
 
 			if (existingUserIndex !== -1) {
 				// User exists, update their password array
-				const updatedUsers = [...usersDB]
+				const updatedUsers = usersDB ? [...usersDB] : []
 				updatedUsers[existingUserIndex].passwords.push(newPassword)
 				setUsersDB(updatedUsers)
 
