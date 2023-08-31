@@ -23,3 +23,7 @@ export interface User {
 	id: string
 	passwords: Password[]
 }
+
+export interface CreatePasswordProps {
+	usersDb: User[]
+}
