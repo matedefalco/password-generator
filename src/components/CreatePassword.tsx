@@ -144,9 +144,9 @@ const CreatePassword: React.FC = () => {
 			/>
 			<PasswordGenerator onPasswordGenerated={handlePasswordGenerated} />
 			{/* Open the modal using ID.showModal() method */}
-			<div className="flex sm:flex-col sm:items-center sm:gap.4 lg:justify-between lg:w-80">
+			<div className="flex flex-col items-center gap-4 lg:flex-row lg:justify-between lg:w-[30%]">
 				<Link to={`/`}>
-					<button className="btn">GO BACK</button>
+					<button className="btn btn-neutral">GO BACK</button>
 				</Link>
 				<button
 					className="btn btn-primary"
