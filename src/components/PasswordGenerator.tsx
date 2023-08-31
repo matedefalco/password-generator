@@ -70,7 +70,7 @@ const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({
 		}))
 
 		if (onPasswordGenerated) {
-			onPasswordGenerated(newPassword)
+			onPasswordGenerated(password)
 		}
 	}
 

@@ -1,6 +1,7 @@
-import { useState } from "react"
-import PasswordGenerator from "./components/PasswordGenerator"
-import GeneratedPassword from "./components/GeneratedPassword"
+import { Link } from "react-router-dom"
+import { DbContext } from "./context/DbContext"
+import { useContext } from "react"
+import { User } from "./types/Types"
 
 const imgUrls = [
 	"https://cdn1.iconfinder.com/data/icons/programing-development-8/24/react_logo-512.png",
@@ -9,21 +10,21 @@ const imgUrls = [
 	"https://raw.githubusercontent.com/saadeghi/daisyui/master/src/docs/static/images/daisyui-logo/favicon-192.png",
 ]
 
-const App = () => {
-	const [generatedPassword, setGeneratedPassword] = useState<string>("")
-
-	const handlePasswordGenerated = (password: string) => {
-		setGeneratedPassword(password)
-	}
+const App: React.FC = () => {
+	const usersDb = useContext<User[] | undefined>(DbContext)
 
 	return (
-		<main className="flex flex-col justify-center items-center w-screen h-screen gap-8p py-4">
+		<main className="flex flex-col justify-center items-center w-full h-full my-8 gap-4 p-4">
 			<h1 className="text-2xl text-slate-500">Password generator</h1>
-			<div className="sm:p-4 flex flex-col justify-center gap-4 ">
-				<GeneratedPassword generatedPassword={generatedPassword} />
-				<PasswordGenerator onPasswordGenerated={handlePasswordGenerated} />
-			</div>
-			<footer className="flex flex-col gap-2 items-center">
+			{usersDb && usersDb.length > 0 && (
+				<Link to={`/user-passwords`}>
+					<button className="btn btn-primary w-full">MY PASSWORDS</button>
+				</Link>
+			)}
+			<Link to={`/create-password`}>
+				<button className="btn btn-primary w-full">NEW PASSWORD</button>
+			</Link>
+			<footer className="flex flex-col gap-2 items-center mb-8">
 				<p>Made with:</p>
 				<ul className="flex gap-2">
 					{imgUrls.map((url, index) => (

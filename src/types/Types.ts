@@ -1,3 +1,5 @@
+import { PropsWithChildren } from "react"
+
 export type PasswordVariables = {
 	characterLength: number
 	upperCase: boolean
@@ -8,13 +10,27 @@ export type PasswordVariables = {
 
 export type Password = {
 	_password: string
+	name?: string
 	variables: PasswordVariables
 }
 
 export type GeneratedPasswordProps = {
-	generatedPassword: string
+	generatedPassword: Password
 }
 
 export type PasswordGeneratorProps = {
-	onPasswordGenerated: (password: string) => void
+	onPasswordGenerated: (password: Password) => void
+}
+
+export interface User {
+	id: string
+	passwords: Password[]
+}
+
+export type DbContextProviderProps = PropsWithChildren<object>
+
+declare global {
+	interface Window {
+		my_modal_1: any
+	}
 }

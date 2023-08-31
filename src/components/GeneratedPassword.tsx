@@ -2,7 +2,7 @@ import { GeneratedPasswordProps } from "../types/Types"
 import { useCopyToClipboard } from "../helpers/CopyToClipboard"
 
 const GeneratedPassword = ({ generatedPassword }: GeneratedPasswordProps) => {
-	const handleCopyToClipboard = useCopyToClipboard(generatedPassword)
+	const handleCopyToClipboard = useCopyToClipboard(generatedPassword._password)
 
 	return (
 		<div
@@ -10,7 +10,7 @@ const GeneratedPassword = ({ generatedPassword }: GeneratedPasswordProps) => {
 			className="card card-compact sm:w-8/12 sm:mx-auto lg:w-96 bg-base-100 border-black shadow-xl flex-row sm:justify-between items-center p-2"
 		>
 			{/* Display generated password */}
-			<p className="flex-1 p-1 italic">{generatedPassword}</p>
+			<p className="flex-1 p-1 italic">{generatedPassword._password}</p>
 
 			{/* Button to copy password to clipboard */}
 			<button className="btn btn-primary" onClick={handleCopyToClipboard}>
