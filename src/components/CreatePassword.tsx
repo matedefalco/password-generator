@@ -4,6 +4,7 @@ import PasswordGenerator from "./PasswordGenerator"
 import { Password, User } from "../types/Types"
 import { useUser } from "@clerk/clerk-react"
 import { useDbContext } from "../context/DbContext"
+import { Link } from "react-router-dom"
 import { useNavigate } from "react-router-dom"
 
 const CreatePassword: React.FC = () => {
@@ -39,6 +40,27 @@ const CreatePassword: React.FC = () => {
 
 	async function addPasswordHandler() {
 		if (user && generatedPassword) {
+			let errorMessage = ""
+			switch (true) {
+				case !generatedPassword._password:
+				case generatedPassword._password.trim().length === 0:
+					errorMessage = "The password cannot be empty."
+					break
+				case generatedPassword._password
+					.trim()
+					.split("")
+					.every((char) => char === "*"):
+					errorMessage = "The password cannot consist entirely of asterisks."
+					break
+				case !generatedPassword.name:
+					errorMessage = "The password must have an assigned name."
+					break
+			}
+			if (errorMessage) {
+				alert(errorMessage)
+				return
+			}
+
 			const newPassword: Password = {
 				_password: generatedPassword._password,
 				name: generatedPassword.name,
@@ -103,7 +125,7 @@ const CreatePassword: React.FC = () => {
 	}
 
 	return (
-		<div className="sm:p-4 flex flex-col justify-center items-center gap-4">
+		<div className="sm:p-4 flex flex-col justify-center items-center gap-8">
 			<GeneratedPassword
 				generatedPassword={
 					generatedPassword || {
@@ -121,12 +143,17 @@ const CreatePassword: React.FC = () => {
 			/>
 			<PasswordGenerator onPasswordGenerated={handlePasswordGenerated} />
 			{/* Open the modal using ID.showModal() method */}
-			<button
-				className="btn btn-primary"
-				onClick={() => window.my_modal_1.showModal()}
-			>
-				CREATE PASSWORD
-			</button>
+			<div className="flex sm:flex-col sm:items-center sm:gap.4 lg:justify-between lg:w-80">
+				<Link to={`/`}>
+					<button className="btn">GO BACK</button>
+				</Link>
+				<button
+					className="btn btn-primary"
+					onClick={() => window.my_modal_1.showModal()}
+				>
+					CREATE PASSWORD
+				</button>
+			</div>
 			<dialog id="my_modal_1" className="modal">
 				<form method="dialog" className="modal-box">
 					<p className="py-4">Name</p>
