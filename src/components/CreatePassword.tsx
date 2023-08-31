@@ -4,6 +4,7 @@ import PasswordGenerator from "./PasswordGenerator"
 import { Password, User } from "../types/Types"
 import { useUser } from "@clerk/clerk-react"
 import { useDbContext } from "../context/DbContext"
+import { useNavigate } from "react-router-dom"
 
 const CreatePassword: React.FC = () => {
 	const usersDb = useDbContext()
@@ -12,14 +13,35 @@ const CreatePassword: React.FC = () => {
 	const [generatedPassword, setGeneratedPassword] = useState<Password | null>()
 	const [usersDB, setUsersDB] = useState<User[]>(usersDb)
 
+	const navigate = useNavigate()
+
 	const handlePasswordGenerated = (password: Password) => {
 		setGeneratedPassword(password)
+	}
+
+	const handlePasswordNameChange = (
+		event: React.ChangeEvent<HTMLInputElement>
+	) => {
+		const newName = event.target.value
+		setGeneratedPassword((prevPassword) => ({
+			...prevPassword,
+			name: newName,
+			_password: prevPassword?._password || "",
+			variables: prevPassword?.variables || {
+				characterLength: 0,
+				upperCase: false,
+				lowerCase: true,
+				numbers: false,
+				symbols: false,
+			},
+		}))
 	}
 
 	async function addPasswordHandler() {
 		if (user && generatedPassword) {
 			const newPassword: Password = {
 				_password: generatedPassword._password,
+				name: generatedPassword.name,
 				variables: {
 					characterLength: generatedPassword.variables.characterLength,
 					upperCase: generatedPassword.variables.upperCase,
@@ -75,6 +97,8 @@ const CreatePassword: React.FC = () => {
 					console.error("Error adding password:", error)
 				}
 			}
+
+			navigate("/user-passwords")
 		}
 	}
 
@@ -84,6 +108,7 @@ const CreatePassword: React.FC = () => {
 				generatedPassword={
 					generatedPassword || {
 						_password: "",
+						name: "",
 						variables: {
 							characterLength: 0,
 							upperCase: false,
@@ -109,6 +134,7 @@ const CreatePassword: React.FC = () => {
 						type="text"
 						placeholder="Type here"
 						className="input input-bordered w-full"
+						onChange={handlePasswordNameChange}
 					/>
 					<p className="py-4">Password</p>
 					<input

@@ -10,6 +10,7 @@ export type PasswordVariables = {
 
 export type Password = {
 	_password: string
+	name?: string
 	variables: PasswordVariables
 }
 
@@ -27,3 +28,9 @@ export interface User {
 }
 
 export type DbContextProviderProps = PropsWithChildren<object>
+
+declare global {
+	interface Window {
+		my_modal_1: any
+	}
+}
