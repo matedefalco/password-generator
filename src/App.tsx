@@ -1,4 +1,4 @@
-import CreatePassword from "./components/CreatePassword"
+import { Link } from "react-router-dom"
 
 const imgUrls = [
 	"https://cdn1.iconfinder.com/data/icons/programing-development-8/24/react_logo-512.png",
@@ -11,7 +11,12 @@ const App: React.FC = () => {
 	return (
 		<main className="flex flex-col justify-center items-center w-full h-full my-8 gap-4 p-4">
 			<h1 className="text-2xl text-slate-500">Password generator</h1>
-			<CreatePassword />
+			<Link to={`/user-passwords`}>
+				<button className="btn btn-primary w-full">MY PASSWORDS</button>
+			</Link>
+			<Link to={`/create-password`}>
+				<button className="btn btn-primary w-full">NEW PASSWORD</button>
+			</Link>
 			<footer className="flex flex-col gap-2 items-center mb-8">
 				<p>Made with:</p>
 				<ul className="flex gap-2">
