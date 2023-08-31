@@ -95,9 +95,36 @@ const CreatePassword: React.FC = () => {
 				}
 			/>
 			<PasswordGenerator onPasswordGenerated={handlePasswordGenerated} />
-			<button className="btn btn-primary w-75" onClick={addPasswordHandler}>
-				SAVE PASSWORD
+			{/* Open the modal using ID.showModal() method */}
+			<button
+				className="btn btn-primary"
+				onClick={() => window.my_modal_1.showModal()}
+			>
+				CREATE PASSWORD
 			</button>
+			<dialog id="my_modal_1" className="modal">
+				<form method="dialog" className="modal-box">
+					<p className="py-4">Name</p>
+					<input
+						type="text"
+						placeholder="Type here"
+						className="input input-bordered w-full"
+					/>
+					<p className="py-4">Password</p>
+					<input
+						type="text"
+						placeholder={generatedPassword?._password}
+						className="input input-bordered w-full"
+						disabled
+					/>
+					<div className="modal-action">
+						<button className="btn btn-primary" onClick={addPasswordHandler}>
+							Save
+						</button>
+						<button className="btn">Close</button>
+					</div>
+				</form>
+			</dialog>
 		</div>
 	)
 }
