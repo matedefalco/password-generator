@@ -1,26 +1,32 @@
 import { useState } from "react"
-import GeneratedPassword from "./GeneratedPassword"
-import PasswordGenerator from "./PasswordGenerator"
+import GeneratedPassword from "../components/GeneratedPassword"
+import PasswordGenerator from "../components/PasswordGenerator"
 import { Password, User } from "../types/Types"
 import { useUser } from "@clerk/clerk-react"
-import { Link } from "react-router-dom"
 import { useNavigate } from "react-router-dom"
 import { DbContext } from "../context/DbContext"
 import { useContext } from "react"
+import NavBar from "../components/NavBar"
 
 const CreatePassword: React.FC = () => {
+	// Fetch user data from context and Clerk
 	const usersDb = useContext(DbContext)
 	const { user } = useUser()
 	const userID: string | undefined = user?.id
+
+	// State to hold the generated password and the users' database
 	const [generatedPassword, setGeneratedPassword] = useState<Password | null>()
 	const [usersDB, setUsersDB] = useState<User[] | undefined>(usersDb)
 
+	// Initialize the navigation hook
 	const navigate = useNavigate()
 
+	// Handle generated password event
 	const handlePasswordGenerated = (password: Password) => {
 		setGeneratedPassword(password)
 	}
 
+	// Handle password name change event
 	const handlePasswordNameChange = (
 		event: React.ChangeEvent<HTMLInputElement>
 	) => {
@@ -39,6 +45,7 @@ const CreatePassword: React.FC = () => {
 		}))
 	}
 
+	// Handle adding a password
 	async function addPasswordHandler() {
 		if (user && generatedPassword) {
 			let errorMessage = ""
@@ -75,23 +82,46 @@ const CreatePassword: React.FC = () => {
 			}
 
 			if (usersDB) {
-				const updatedUsers = usersDB.map((userData) =>
-					userData.id === userID
-						? { ...userData, passwords: [...userData.passwords, newPassword] }
-						: userData
+				const existingUserIndex = usersDB.findIndex(
+					(userData) => userData.id === userID
 				)
 
-				try {
-					await updateDatabase(updatedUsers)
-				} catch (error) {
-					console.error("Error updating database:", error)
+				if (existingUserIndex !== -1) {
+					// User exists, update their password array
+					const updatedUsers = usersDB.map((userData, index) =>
+						index === existingUserIndex
+							? { ...userData, passwords: [...userData.passwords, newPassword] }
+							: userData
+					)
+
+					try {
+						await updateDatabase(updatedUsers)
+					} catch (error) {
+						console.error("Error updating database:", error)
+					}
+				} else {
+					// User does not exist, create a new user entry
+					const newUser: User = {
+						id: userID || "",
+						passwords: [newPassword],
+					}
+
+					const updatedUsers = [...usersDB, newUser]
+
+					try {
+						await updateDatabase(updatedUsers)
+					} catch (error) {
+						console.error("Error updating database:", error)
+					}
 				}
 			}
 
+			// Navigate to user-passwords page
 			navigate("/user-passwords")
 		}
 	}
 
+	// Update the users' database and set state
 	async function updateDatabase(updatedUsers: User[]) {
 		setUsersDB(updatedUsers)
 		await fetch(
@@ -107,7 +137,11 @@ const CreatePassword: React.FC = () => {
 	}
 
 	return (
-		<div className="sm:p-4 flex flex-col justify-center items-center gap-8">
+		<div className="flex flex-col justify-center items-center gap-8">
+			{/* Render the navigation bar */}
+			<NavBar />
+
+			{/* Render the generated password component */}
 			<GeneratedPassword
 				generatedPassword={
 					generatedPassword || {
@@ -123,12 +157,12 @@ const CreatePassword: React.FC = () => {
 					}
 				}
 			/>
+
+			{/* Render the password generator component */}
 			<PasswordGenerator onPasswordGenerated={handlePasswordGenerated} />
-			{/* Open the modal using ID.showModal() method */}
-			<div className="flex flex-col items-center gap-4 lg:flex-row lg:justify-between lg:w-[30%]">
-				<Link to={`/`}>
-					<button className="btn btn-neutral">GO BACK</button>
-				</Link>
+
+			{/* Button to open the password creation modal */}
+			<div className="flex flex-col items-center gap-4 lg:flex-row lg:justify-between lg:w-[30%] mb-8">
 				<button
 					className="btn btn-primary"
 					onClick={() => window.my_modal_1.showModal()}
@@ -136,6 +170,8 @@ const CreatePassword: React.FC = () => {
 					CREATE PASSWORD
 				</button>
 			</div>
+
+			{/* Password creation modal */}
 			<dialog id="my_modal_1" className="modal">
 				<form method="dialog" className="modal-box">
 					<p className="py-4">Name</p>
