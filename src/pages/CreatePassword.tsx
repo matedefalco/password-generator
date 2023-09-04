@@ -9,19 +9,24 @@ import { useContext } from "react"
 import NavBar from "../components/NavBar"
 
 const CreatePassword: React.FC = () => {
+	// Fetch user data from context and Clerk
 	const usersDb = useContext(DbContext)
 	const { user } = useUser()
 	const userID: string | undefined = user?.id
-	console.log("Suka ~ file: CreatePassword.tsx:16 ~ userID:", userID)
+
+	// State to hold the generated password and the users' database
 	const [generatedPassword, setGeneratedPassword] = useState<Password | null>()
 	const [usersDB, setUsersDB] = useState<User[] | undefined>(usersDb)
 
+	// Initialize the navigation hook
 	const navigate = useNavigate()
 
+	// Handle generated password event
 	const handlePasswordGenerated = (password: Password) => {
 		setGeneratedPassword(password)
 	}
 
+	// Handle password name change event
 	const handlePasswordNameChange = (
 		event: React.ChangeEvent<HTMLInputElement>
 	) => {
@@ -40,6 +45,7 @@ const CreatePassword: React.FC = () => {
 		}))
 	}
 
+	// Handle adding a password
 	async function addPasswordHandler() {
 		if (user && generatedPassword) {
 			let errorMessage = ""
@@ -110,10 +116,12 @@ const CreatePassword: React.FC = () => {
 				}
 			}
 
+			// Navigate to user-passwords page
 			navigate("/user-passwords")
 		}
 	}
 
+	// Update the users' database and set state
 	async function updateDatabase(updatedUsers: User[]) {
 		setUsersDB(updatedUsers)
 		await fetch(
@@ -130,7 +138,10 @@ const CreatePassword: React.FC = () => {
 
 	return (
 		<div className="flex flex-col justify-center items-center gap-8">
+			{/* Render the navigation bar */}
 			<NavBar />
+
+			{/* Render the generated password component */}
 			<GeneratedPassword
 				generatedPassword={
 					generatedPassword || {
@@ -146,8 +157,11 @@ const CreatePassword: React.FC = () => {
 					}
 				}
 			/>
+
+			{/* Render the password generator component */}
 			<PasswordGenerator onPasswordGenerated={handlePasswordGenerated} />
-			{/* Open the modal using ID.showModal() method */}
+
+			{/* Button to open the password creation modal */}
 			<div className="flex flex-col items-center gap-4 lg:flex-row lg:justify-between lg:w-[30%] mb-8">
 				<button
 					className="btn btn-primary"
@@ -156,6 +170,8 @@ const CreatePassword: React.FC = () => {
 					CREATE PASSWORD
 				</button>
 			</div>
+
+			{/* Password creation modal */}
 			<dialog id="my_modal_1" className="modal">
 				<form method="dialog" className="modal-box">
 					<p className="py-4">Name</p>

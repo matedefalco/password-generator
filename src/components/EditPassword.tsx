@@ -9,9 +9,11 @@ const EditPassword = ({
 	userPasswords,
 	updateUserPasswords,
 }) => {
+	// Fetch user data and user database from context
 	const { user } = useUser()
 	const usersDb = useContext<User[] | undefined>(DbContext)
 
+	// Initialize state for editing password and previous password name
 	const [editingPassword, setEditingPassword] = useState<Password | null>({
 		name: passwordName,
 		_password: passwordValue,
@@ -25,6 +27,7 @@ const EditPassword = ({
 	})
 	const [prevPasswordName, setPrevPasswordName] = useState<string | undefined>()
 
+	// Handle changes in the edit fields
 	const handleEditChange = (field: "name" | "_password", newValue: string) => {
 		setEditingPassword((prevPassword: Password | null) => {
 			if (prevPassword) {
@@ -48,6 +51,7 @@ const EditPassword = ({
 		})
 	}
 
+	// Handle password edit submission
 	const editPasswordHandler = async () => {
 		if (editingPassword) {
 			let errorMessage = ""
@@ -81,7 +85,7 @@ const EditPassword = ({
 
 			updateUserPasswords(updatedPasswords)
 
-			// Lógica de actualización en el backend
+			// Backend update logic
 			const usersDBCopy = usersDb ? [...usersDb] : []
 
 			const currentUserIndex = usersDBCopy.findIndex(
@@ -107,6 +111,7 @@ const EditPassword = ({
 				}
 			}
 
+			// Reset state
 			setEditingPassword(null)
 			setPrevPasswordName(undefined)
 		}
@@ -114,6 +119,7 @@ const EditPassword = ({
 
 	return (
 		<div>
+			{/* Button to open the modal */}
 			<button
 				className="btn join-item bg-gray-300"
 				onClick={() => {
@@ -127,6 +133,7 @@ const EditPassword = ({
 					className="lg:w-5 sm:w-4 lg:h-5 sm:h-4"
 				/>
 			</button>
+			{/* Modal for editing */}
 			<dialog id={`my_modal_${passwordName}`} className="modal">
 				<form method="dialog" className="modal-box">
 					<p className="py-4">Name</p>
