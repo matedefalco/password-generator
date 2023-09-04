@@ -137,7 +137,7 @@ const UserPasswords = () => {
 				<button className="btn btn-primary w-full">NEW PASSWORD</button>
 			</Link>
 			{userPasswords.length !== 0 ? (
-				<div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+				<div className="grid grid-cols-1 gap-4 lg:grid-cols-2 w-[80%]">
 					{userPasswords.map((password) => (
 						<div
 							key={password.name}
@@ -161,7 +161,7 @@ const UserPasswords = () => {
 												<img
 													alt="clipboard"
 													src="https://icongr.am/clarity/clipboard.svg?size=128&color=ffffff"
-													className="w-5 h-5"
+													className="lg:w-5 sm:w-4 lg:h-5 sm:h-4"
 												/>
 											</CopyToClipboard>
 										</button>
@@ -176,7 +176,7 @@ const UserPasswords = () => {
 											<img
 												alt="show"
 												src="https://www.svgrepo.com/show/45216/eye-view-interface-symbol.svg"
-												className="w-5 h-5"
+												className="lg:w-5 sm:w-4 lg:h-5 sm:h-4"
 											/>
 										</button>
 										<button
@@ -189,7 +189,7 @@ const UserPasswords = () => {
 											<img
 												alt="edit"
 												src="https://cdn-icons-png.flaticon.com/512/1827/1827951.png"
-												className="w-5 h-5"
+												className="lg:w-5 sm:w-4 lg:h-5 sm:h-4"
 											/>
 										</button>
 										<dialog id={`my_modal_${password.name}`} className="modal">
