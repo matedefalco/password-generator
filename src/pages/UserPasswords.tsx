@@ -77,7 +77,8 @@ const UserPasswords = () => {
 											/>
 										</button>
 										<EditPassword
-											password={password.name}
+											passwordName={password.name}
+											passwordValue={password._password}
 											userPasswords={userPasswords}
 											updateUserPasswords={updateUserPasswords}
 										/>
