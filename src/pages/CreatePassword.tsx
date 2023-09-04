@@ -162,7 +162,7 @@ const CreatePassword: React.FC = () => {
 			<PasswordGenerator onPasswordGenerated={handlePasswordGenerated} />
 
 			{/* Button to open the password creation modal */}
-			<div className="flex flex-col items-center gap-4 lg:flex-row lg:justify-between lg:w-[30%] mb-8">
+			<div className="flex flex-col items-center mb-8">
 				<button
 					className="btn btn-primary"
 					onClick={() => window.my_modal_1.showModal()}
