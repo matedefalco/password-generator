@@ -14,6 +14,16 @@ const UserPasswords = () => {
 	const [editingPassword, setEditingPassword] = useState<Password | null>(null)
 	const [prevPasswordName, setPrevPasswordName] = useState<string | undefined>()
 	const [userPasswords, setUserPasswords] = useState<Password[]>([])
+	const [passwordVisibility, setPasswordVisibility] = useState<{
+		[key: string]: boolean
+	}>({})
+
+	const togglePasswordVisibility = (passwordName: string) => {
+		setPasswordVisibility((prevState) => ({
+			...prevState,
+			[passwordName]: !prevState[passwordName],
+		}))
+	}
 
 	useEffect(() => {
 		if (user && usersDb !== undefined) {
@@ -137,7 +147,11 @@ const UserPasswords = () => {
 							<div className="card-body">
 								<p className="text-xl font-medium">{password.name}</p>
 								<div className="flex justify-between items-center">
-									<p>{password._password}</p>
+									<p>
+										{passwordVisibility[password.name ? password.name : ""]
+											? password._password
+											: password._password.replace(/./g, "*")}
+									</p>
 									<div className="join">
 										<button className="btn join-item bg-violet-800 rounded-lg">
 											<CopyToClipboard
@@ -152,6 +166,20 @@ const UserPasswords = () => {
 											</CopyToClipboard>
 										</button>
 										<button
+											className="btn join-item bg-blue-500"
+											onClick={() =>
+												togglePasswordVisibility(
+													password.name ? password.name : ""
+												)
+											}
+										>
+											<img
+												alt="show"
+												src="https://www.svgrepo.com/show/45216/eye-view-interface-symbol.svg"
+												className="w-5 h-5"
+											/>
+										</button>
+										<button
 											className="btn join-item bg-gray-300"
 											onClick={() => {
 												window[`my_modal_${password.name}`].showModal()
@@ -159,7 +187,7 @@ const UserPasswords = () => {
 											}}
 										>
 											<img
-												alt="clipboard"
+												alt="edit"
 												src="https://cdn-icons-png.flaticon.com/512/1827/1827951.png"
 												className="w-5 h-5"
 											/>
