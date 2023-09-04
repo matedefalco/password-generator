@@ -17,6 +17,14 @@
 	-webkit-text-size-adjust: 100%;
 }
 
+body {
+	height: 100dvh;
+}
+
+#root {
+	height: 100%;
+}
+
 @media (prefers-color-scheme: light) {
 	:root {
 		color: #213547;
