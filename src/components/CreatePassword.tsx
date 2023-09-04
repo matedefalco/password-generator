@@ -74,55 +74,36 @@ const CreatePassword: React.FC = () => {
 				},
 			}
 
-			// Verifies if usersDB is empty or not, before using findIndex
-			const existingUserIndex =
-				usersDB !== undefined
-					? usersDB.findIndex((userData) => userData.id === userID)
-					: -1
-
-			if (existingUserIndex !== -1) {
-				// User exists, update their password array
-				const updatedUsers = usersDB ? [...usersDB] : []
-				updatedUsers[existingUserIndex].passwords.push(newPassword)
-				setUsersDB(updatedUsers)
-
-				await fetch(
-					"https://password-generator-57bd8-default-rtdb.firebaseio.com/passwords.json",
-					{
-						method: "PUT",
-						body: JSON.stringify(updatedUsers),
-						headers: {
-							"Content-Type": "application/json",
-						},
-					}
+			if (usersDB) {
+				const updatedUsers = usersDB.map((userData) =>
+					userData.id === userID
+						? { ...userData, passwords: [...userData.passwords, newPassword] }
+						: userData
 				)
-			} else {
-				// User does not exist, create a new user entry
-				const newUser: User = {
-					id: userID || "",
-					passwords: [newPassword],
-				}
-
-				setUsersDB([newUser])
 
 				try {
-					await fetch(
-						"https://password-generator-57bd8-default-rtdb.firebaseio.com/passwords.json",
-						{
-							method: "POST",
-							body: JSON.stringify(usersDB),
-							headers: {
-								"Content-Type": "application/json",
-							},
-						}
-					)
+					await updateDatabase(updatedUsers)
 				} catch (error) {
-					console.error("Error adding password:", error)
+					console.error("Error updating database:", error)
 				}
 			}
 
 			navigate("/user-passwords")
 		}
+	}
+
+	async function updateDatabase(updatedUsers: User[]) {
+		setUsersDB(updatedUsers)
+		await fetch(
+			"https://password-generator-57bd8-default-rtdb.firebaseio.com/passwords.json",
+			{
+				method: "PUT",
+				body: JSON.stringify(updatedUsers),
+				headers: {
+					"Content-Type": "application/json",
+				},
+			}
+		)
 	}
 
 	return (

@@ -15,7 +15,6 @@ const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({
 			symbols: false,
 		},
 	})
-	console.log("Suka ~ file: PasswordGenerator.tsx:18 ~ password effect:", password)
 
 	// Generate a new password whenever variables change
 	useEffect(() => {
