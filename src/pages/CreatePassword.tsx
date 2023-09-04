@@ -13,6 +13,7 @@ const CreatePassword: React.FC = () => {
 	const usersDb = useContext(DbContext)
 	const { user } = useUser()
 	const userID: string | undefined = user?.id
+	console.log("Suka ~ file: CreatePassword.tsx:16 ~ userID:", userID)
 	const [generatedPassword, setGeneratedPassword] = useState<Password | null>()
 	const [usersDB, setUsersDB] = useState<User[] | undefined>(usersDb)
 
@@ -76,16 +77,37 @@ const CreatePassword: React.FC = () => {
 			}
 
 			if (usersDB) {
-				const updatedUsers = usersDB.map((userData) =>
-					userData.id === userID
-						? { ...userData, passwords: [...userData.passwords, newPassword] }
-						: userData
+				const existingUserIndex = usersDB.findIndex(
+					(userData) => userData.id === userID
 				)
 
-				try {
-					await updateDatabase(updatedUsers)
-				} catch (error) {
-					console.error("Error updating database:", error)
+				if (existingUserIndex !== -1) {
+					// User exists, update their password array
+					const updatedUsers = usersDB.map((userData, index) =>
+						index === existingUserIndex
+							? { ...userData, passwords: [...userData.passwords, newPassword] }
+							: userData
+					)
+
+					try {
+						await updateDatabase(updatedUsers)
+					} catch (error) {
+						console.error("Error updating database:", error)
+					}
+				} else {
+					// User does not exist, create a new user entry
+					const newUser: User = {
+						id: userID || "",
+						passwords: [newPassword],
+					}
+
+					const updatedUsers = [...usersDB, newUser]
+
+					try {
+						await updateDatabase(updatedUsers)
+					} catch (error) {
+						console.error("Error updating database:", error)
+					}
 				}
 			}
 
