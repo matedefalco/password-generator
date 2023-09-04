@@ -1,12 +1,13 @@
 import { useState } from "react"
-import GeneratedPassword from "./GeneratedPassword"
-import PasswordGenerator from "./PasswordGenerator"
+import GeneratedPassword from "../components/GeneratedPassword"
+import PasswordGenerator from "../components/PasswordGenerator"
 import { Password, User } from "../types/Types"
 import { useUser } from "@clerk/clerk-react"
 import { Link } from "react-router-dom"
 import { useNavigate } from "react-router-dom"
 import { DbContext } from "../context/DbContext"
 import { useContext } from "react"
+import NavBar from "../components/NavBar"
 
 const CreatePassword: React.FC = () => {
 	const usersDb = useContext(DbContext)
@@ -107,7 +108,8 @@ const CreatePassword: React.FC = () => {
 	}
 
 	return (
-		<div className="sm:p-4 flex flex-col justify-center items-center gap-8">
+		<div className="flex flex-col justify-center items-center gap-8">
+			<NavBar />
 			<GeneratedPassword
 				generatedPassword={
 					generatedPassword || {

@@ -6,6 +6,7 @@ import { CopyToClipboard } from "react-copy-to-clipboard"
 import { DbContext } from "../context/DbContext"
 import { useContext } from "react"
 import { User } from "../types/Types"
+import NavBar from "../components/NavBar"
 
 const UserPasswords = () => {
 	const [state, setState] = useState({ value: "", copied: false })
@@ -132,7 +133,8 @@ const UserPasswords = () => {
 	}
 
 	return (
-		<div className="flex flex-col gap-8 items-center justify-center my-8">
+		<div className="flex flex-col gap-8 items-center justify-center">
+			<NavBar />
 			<Link to={`/create-password`}>
 				<button className="btn btn-primary w-full">NEW PASSWORD</button>
 			</Link>

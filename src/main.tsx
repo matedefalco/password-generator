@@ -10,8 +10,8 @@ import {
 } from "@clerk/clerk-react"
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import { DbContextProvider } from "./context/DbContext.tsx"
-import CreatePassword from "./components/CreatePassword.tsx"
-import UserPasswords from "./components/UserPasswords.tsx"
+import CreatePassword from "./pages/CreatePassword.tsx"
+import UserPasswords from "./pages/UserPasswords.tsx"
 
 if (!import.meta.env.VITE_REACT_APP_CLERK_PUBLISHABLE_KEY) {
 	throw new Error("Missing Publishable key")
