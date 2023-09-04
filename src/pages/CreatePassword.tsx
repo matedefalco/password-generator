@@ -3,7 +3,6 @@ import GeneratedPassword from "../components/GeneratedPassword"
 import PasswordGenerator from "../components/PasswordGenerator"
 import { Password, User } from "../types/Types"
 import { useUser } from "@clerk/clerk-react"
-import { Link } from "react-router-dom"
 import { useNavigate } from "react-router-dom"
 import { DbContext } from "../context/DbContext"
 import { useContext } from "react"
@@ -149,10 +148,7 @@ const CreatePassword: React.FC = () => {
 			/>
 			<PasswordGenerator onPasswordGenerated={handlePasswordGenerated} />
 			{/* Open the modal using ID.showModal() method */}
-			<div className="flex flex-col items-center gap-4 lg:flex-row lg:justify-between lg:w-[30%]">
-				<Link to={`/`}>
-					<button className="btn btn-neutral">GO BACK</button>
-				</Link>
+			<div className="flex flex-col items-center gap-4 lg:flex-row lg:justify-between lg:w-[30%] mb-8">
 				<button
 					className="btn btn-primary"
 					onClick={() => window.my_modal_1.showModal()}
