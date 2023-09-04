@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useMemo } from "react"
 import { PasswordGeneratorProps, Password } from "../types/Types"
 
 const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({
@@ -15,6 +15,12 @@ const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({
 			symbols: false,
 		},
 	})
+	console.log("Suka ~ file: PasswordGenerator.tsx:18 ~ password effect:", password)
+
+	// Generate a new password whenever variables change
+	useEffect(() => {
+		generatePassword()
+	}, [password.variables])
 
 	// Handle character length change
 	const handleCharacterLengthChange = (
@@ -74,11 +80,6 @@ const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({
 		}
 	}
 
-	// Generate a new password whenever variables change
-	useEffect(() => {
-		generatePassword()
-	}, [password.variables])
-
 	// Calculate security percentage based on active options
 	const getSecurityPercentage = () => {
 		const totalOptions = passwordProperties.length
@@ -89,9 +90,11 @@ const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({
 	}
 
 	// Filter out keys that are not needed for display
-	const passwordProperties = Object.keys(password.variables).filter(
-		(key) => key !== "characterLength" && key !== "_password"
-	) as Array<keyof Password["variables"]>
+	const passwordProperties = useMemo(() => {
+		return Object.keys(password.variables).filter(
+			(key) => key !== "characterLength"
+		) as Array<keyof Password["variables"]>
+	}, [password.variables])
 
 	// Calculate interpolated color based on security percentage
 	const getColorForSecurity = () => {
